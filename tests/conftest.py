@@ -34,12 +34,14 @@ async def session():
         poolclass=StaticPool,
     )
 
-    table_registry.metadata.create_all(engine)
+    async with engine.begin() as conn:
+        await conn.run_sync(table_registry.metadata.create_all())
 
     async with AsyncSession(engine) as session:
         yield session
 
-    table_registry.metadata.drop_all(engine)
+    async with engine.begin() as conn:
+        await conn.run_sync(table_registry.metadata.drop_all())
 
 
 @contextmanager
