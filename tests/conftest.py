@@ -35,13 +35,13 @@ async def session():
     )
 
     async with engine.begin() as conn:
-        await conn.run_sync(table_registry.metadata.create_all())
+        await conn.run_sync(table_registry.metadata.create_all)
 
     async with AsyncSession(engine) as session:
         yield session
 
     async with engine.begin() as conn:
-        await conn.run_sync(table_registry.metadata.drop_all())
+        await conn.run_sync(table_registry.metadata.drop_all)
 
 
 @contextmanager
